@@ -36,6 +36,7 @@ backend/knowbase_db.json
 backend/uploads/
 backend/faiss_index/
 backend/*.txt
+!backend/requirements.txt
 backend/*.log
 backend/check_key.py
 backend/key_test.py
