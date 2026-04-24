@@ -1,0 +1,50 @@
+# 🏗️ AI Knowledge Assistant — Git Ignore
+
+# 🔒 ENVIRONMENT & SECRETS
+.env
+.env.local
+.env.*.local
+*.env
+.env.example
+key_repr.txt
+
+
+# 🐍 PYTHON / BACKEND
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env/
+build/
+dist/
+*.egg-info/
+.env.example
+
+# 📦 FRONTEND / NODE
+node_modules/
+dist/
+dist-ssr/
+*.local
+.npm
+.eslintcache
+.stylelintcache
+
+# 🗄️ LOCAL DATABASE & DATA (DO NOT PUSH)
+backend/knowbase_db.json
+backend/uploads/
+backend/faiss_index/
+backend/*.txt
+backend/*.log
+backend/check_key.py
+backend/key_test.py
+backend/temp.py
+uploads/
+
+# 🖥️ OS & IDE
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
