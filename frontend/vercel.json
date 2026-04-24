@@ -3,6 +3,12 @@
   "public": false,
   "cleanUrls": true,
   "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://knowbase-ai-oyog.onrender.com/api/:path*"
+    }
+  ],
   "installCommand": "npm install",
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
