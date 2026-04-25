@@ -17,6 +17,7 @@ db_instance = Database()
 
 async def connect_db():
     """Establish connection to MongoDB Atlas."""
+    print(f"DEBUG: MONGODB_URI is {MONGODB_URI[:15]}...")
     try:
         # Use certifi for SSL/TLS certificates and add timeouts
         db_instance.client = AsyncIOMotorClient(

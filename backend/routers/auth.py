@@ -66,23 +66,30 @@ async def signup(user_data: UserCreate):
         "created_at": datetime.utcnow(),
     }
 
-    result = await db.users.insert_one(user_doc)
-    user_id = str(result.inserted_id)
-    token = create_access_token({"sub": user_id})
+    try:
+        result = await db.users.insert_one(user_doc)
+        user_id = str(result.inserted_id)
+        token = create_access_token({"sub": user_id})
 
-    return Token(
-        access_token=token,
-        token_type="bearer",
-        user=UserResponse(
-            id=user_id,
-            name=user_data.name,
-            email=user_data.email,
-            plan="free",
-            created_at=user_doc["created_at"],
-            queries_today=0,
-            total_docs=0,
-        ),
-    )
+        return Token(
+            access_token=token,
+            token_type="bearer",
+            user=UserResponse(
+                id=user_id,
+                name=user_data.name,
+                email=user_data.email,
+                plan="free",
+                created_at=user_doc["created_at"],
+                queries_today=0,
+                total_docs=0,
+            ),
+        )
+    except Exception as e:
+        # Check if it's a connection error or something else
+        error_msg = str(e)
+        if "timeout" in error_msg.lower() or "connect" in error_msg.lower():
+            raise HTTPException(status_code=503, detail="Database connection timed out. Please check your internet or DB whitelist.")
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {error_msg}")
 
 
 @router.post("/login", response_model=Token)
