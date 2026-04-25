@@ -50,9 +50,9 @@ async def signup(user_data: UserCreate):
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    # Ensure password is within bcrypt's 72-byte limit
-    password_bytes = user_data.password.encode('utf-8')[:72]
-    hashed_password = pwd_context.hash(password_bytes)
+    # Triple-safe truncation for bcrypt limits
+    safe_password = user_data.password[:50]
+    hashed_password = pwd_context.hash(safe_password)
     today = datetime.utcnow().date().isoformat()
 
     user_doc = {
@@ -90,9 +90,9 @@ async def login(credentials: UserLogin):
     db = get_db()
 
     user = await db.users.find_one({"email": credentials.email})
-    # Ensure password is within bcrypt's 72-byte limit
-    password_bytes = credentials.password.encode('utf-8')[:72]
-    if not user or not pwd_context.verify(password_bytes, user["password"]):
+    # Triple-safe truncation for bcrypt limits
+    safe_password = credentials.password[:50]
+    if not user or not pwd_context.verify(safe_password, user["password"]):
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
     # Reset daily query count if new day
